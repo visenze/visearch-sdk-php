@@ -1,8 +1,53 @@
-This is a php sdk for ViSearch Service.
+ViSearch PHP SDK
+--------------------
 
-Please check the examples directory to get the details on how to use this SDK.
+###Overview
 
+This is the ViSearch Software Development Kit (SDK) for PHP. Version: 1.0.0. This guide covers what you need to go through in order to be able to start using the ViSearch SDK for PHP:
 
-Requirements:
-php5-curl:
-sudo apt-get install php5-curl
+* [Setup](#setup)
+* [Initialization](#initialization)
+* [Inserting Images](#inserting-images)
+* [Searching Images](#searching-images)
+
+###Setup
+
+The ViSearch PHP SDK is dependent on php5.4+ and php5-curl.You may include the latest SDK into your project folder
+````
+require_once '../visearch-php/search.php';
+```` 
+
+###Initialization
+
+````
+$service = new SearchService($access_key,$secret_key);
+````
+###Inserting Images
+````
+$images = array();
+$images[] = array('im_name'=>'','im_url'=>'');
+$response = $service->insert($images);
+
+````
+
+###Searching Images
+
+1. Search by id
+````
+$response = $service->idsearch("",true, NULL, array("price","brand"));
+````
+2. Search by color
+````
+$response = $service->colorsearch("fa4d4d");
+````
+3. Search by uploading
+ *  image 
+````
+$image = new Image('test_recognition_with_person.jpg');
+$response = $service->uploadsearch($image);
+````
+ * url
+````
+$image = new Image('http://cdn-static.cnet.co.uk/i/product_media/40001253/image1/440x330-iphone-5-main.jpg');
+$response = $service->uploadsearch($image);
+````
