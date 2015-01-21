@@ -3,11 +3,10 @@ ViSearch PHP SDK
 
 ##Overview
 
-[![Build Status](https://api.travis-ci.org/Lincolnnus/visearch-sdk-php.svg?branch=master)](https://travis-ci.org/Lincolnnus/visearch-sdk-php)This is the ViSearch Software Development Kit (SDK) for PHP. Version: 1.0.0. This guide covers what you need to go through in order to be able to start using the ViSearch SDK for PHP:
-
 * [Setup](#setup)
 * [Initialization](#initialization)
 * [Inserting Images](#inserting-images)
+* [Removing Images](#removing-images)
 * [Searching Images](#searching-images)
 
 ##Setup
@@ -25,9 +24,18 @@ $service = new SearchService($access_key,$secret_key);
 ##Inserting Images
 ````
 $images = array();
-$images[] = array('im_name'=>'','im_url'=>'');
+$images[] = array('im_name'=>"",'im_url'=>"");
 $response = $service->insert($images);
 
+````
+
+##Removing Images
+````
+$service = new RemoveService($access_key,$secret_key);
+
+$response = $service->remove(array("",""));
+// output the response
+$service->print_json($response );
 ````
 
 ##Searching Images
@@ -43,7 +51,7 @@ $response = $service->colorsearch("fa4d4d");
 	3. Search by uploading
 * image 
 ````
-$image = new Image('test_recognition_with_person.jpg');
+$image = new Image('test_file.png');
 $response = $service->uploadsearch($image);
 ````
 * url
