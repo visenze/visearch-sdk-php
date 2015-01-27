@@ -153,8 +153,14 @@ class ViSearchBaseRequest
         }
         foreach ($params as $key => $value) {
             if(is_array($value)){
-                foreach ($value as $value_child) {
-                     $query_string .= $key . '=' . $value_child . '&';
+                if($key == 'fl'){
+                    foreach ($value as $value_child) {
+                         $query_string .= $key . '=' . $value_child . '&';
+                    }
+                }else if($key=='fq'){
+                    foreach ($value as $fq_key => $fq_value) {
+                         $query_string .= $key . '=' . $fq_key . ':' . $fq_value . '&';
+                    }
                 }
             }else if(is_bool($value)){
                 $bool_res = ($value) ? 'true' : 'false';
