@@ -33,7 +33,7 @@ class SearchService extends ViSearchBaseRequest
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @$qinfo, If true, query information will be returned.
      */
-    function idsearch($im_name=NULL,$score=false, $fq=array(), $fl=array(), $page=1, $limit=30, $qinfo=false){
+    function idsearch($im_name=NULL,$score=false, $fq=array(), $fl=array(), $page=1, $limit=10, $qinfo=false){
         $params = array(
             'im_name' => $im_name,
             'score'=> $score,
@@ -66,7 +66,7 @@ class SearchService extends ViSearchBaseRequest
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @$qinfo, If true, query information will be returned.
      */
-    function colorsearch($color=NULL,$score=false, $fq=array(), $fl=array(), $page=1, $limit=30, $qinfo=false){
+    function colorsearch($color=NULL,$score=false, $fq=array(), $fl=array(), $page=1, $limit=10, $qinfo=false){
         $params = array(
             'color' => $color,
             'score'=> $score,
@@ -100,7 +100,7 @@ class SearchService extends ViSearchBaseRequest
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @$qinfo, If true, query information will be returned.
      */
-    function uploadsearch($image=NULL, $box=NULL, $score=false, $fq=array(), $fl=array(), $page=1, $limit=30, $qinfo=false){
+    function uploadsearch($image=NULL, $box=NULL, $score=false, $fq=array(), $fl=array(), $page=1, $limit=10, $qinfo=false){
        if (!gettype($image) == 'object' || !get_class($image) == 'Image')
         throw new ViSearchException('Need to pass a image object');
 
