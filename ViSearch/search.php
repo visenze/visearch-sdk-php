@@ -1,7 +1,7 @@
 <?php
 
 require_once 'base_request.php';
-include(‘imagemagick.class.php’);
+
 
 class SearchService extends ViSearchBaseRequest
 {
@@ -119,8 +119,7 @@ class SearchService extends ViSearchBaseRequest
             $params["im_url"]= $image->get_path();
             return $this->get('uploadsearch', $params);
         }else {
-            $image = new Imagick("@{$image->local_filepath}");
-            $params['image'] =  $image->resizeImage(200,200, imagick::FILTER_LANCZOS, 0.9, true);
+            $params['image'] = "@{$image->local_filepath}";
             return $this->post_multipart('uploadsearch', $params);
         }
     }
