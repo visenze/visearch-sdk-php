@@ -1,7 +1,7 @@
 <?php
 
 require_once 'base_request.php';
-
+include(‘imagemagick.class.php’);
 
 class SearchService extends ViSearchBaseRequest
 {
@@ -31,17 +31,17 @@ class SearchService extends ViSearchBaseRequest
      *      ) 
      * @$page, The result page number.
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
-     * @$qinfo, If true, query information will be returned.
      */
-    function idsearch($im_name=NULL,$score=false, $fq=array(), $fl=array(), $page=1, $limit=30, $qinfo=false){
+    function idsearch($im_name=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0){
         $params = array(
             'im_name' => $im_name,
             'score'=> $score,
             'page'=> $page,
             'limit' => $limit,
-            'qinfo' => $qinfo,
             'fq' => $fq,
-            'fl' => $fl
+            'fl' => $fl,
+            'score_max'=>$score_max,
+            'score_min'=>$score_min
         );
         return $this->get('search', $params);
     }
@@ -64,17 +64,17 @@ class SearchService extends ViSearchBaseRequest
      *      ) 
      * @$page, The result page number.
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
-     * @$qinfo, If true, query information will be returned.
      */
-    function colorsearch($color=NULL,$score=false, $fq=array(), $fl=array(), $page=1, $limit=30, $qinfo=false){
+    function colorsearch($color=NULL,$page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0){
         $params = array(
             'color' => $color,
             'score'=> $score,
             'page'=> $page,
             'limit' => $limit,
-            'qinfo' => $qinfo,
             'fq' => $fq,
-            'fl' => $fl
+            'fl' => $fl,
+            'score_max'=>$score_max,
+            'score_min'=>$score_min
         );
         return $this->get('colorsearch', $params);
     }
@@ -98,9 +98,8 @@ class SearchService extends ViSearchBaseRequest
      *      ) 
      * @$page, The result page number.
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
-     * @$qinfo, If true, query information will be returned.
      */
-    function uploadsearch($image=NULL, $box=NULL, $score=false, $fq=array(), $fl=array(), $page=1, $limit=30, $qinfo=false){
+    function uploadsearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0){
        if (!gettype($image) == 'object' || !get_class($image) == 'Image')
         throw new ViSearchException('Need to pass a image object');
 
@@ -108,18 +107,20 @@ class SearchService extends ViSearchBaseRequest
             'score'=> $score,
             'page'=> $page,
             'limit' => $limit,
-            'qinfo' => $qinfo,
             'fq' => $fq,
-            'fl' => $fl
+            'fl' => $fl,
+            'score_max'=>$score_max,
+            'score_min'=>$score_min
         );
         if(!empty($image->get_box())){
-            $params["box"] = $image->get_box();
+            $params["box"] = $image->get_box_parse();
         }
         if($image -> is_http_image()){
             $params["im_url"]= $image->get_path();
             return $this->get('uploadsearch', $params);
         }else {
-            $params['image'] = "@{$image->local_filepath}";
+            $image = new Imagick("@{$image->local_filepath}");
+            $params['image'] =  $image->resizeImage(200,200, imagick::FILTER_LANCZOS, 0.9, true);
             return $this->post_multipart('uploadsearch', $params);
         }
     }

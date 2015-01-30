@@ -1,5 +1,8 @@
 <?php
 
+require_once 'box.php';
+require_once 'resizeSettings.php';
+
 class Image
 {
     /// Construct an object describing an image.
@@ -7,13 +10,13 @@ class Image
     /// Arguments:
     /// `file`, the path to the image, if it is to be taken from a file. or a upload file object
     ///
-    function __construct($file = '', $box = null)
+    function __construct($file = '', $resizeSettings = NULL)
     {   
         if(empty($file)) {
             throw ViSearchException("Please input a valid local image file path or http image url");
         }
         // $this->data = null;
-        $this->box = $box;
+        $this->resizeSettings = $resizeSettings;
         $this->local_filepath = $file;
         if( ! $this->is_http_image($file)){
             if(is_string($file) && !$this->__startsWith($file,'/') ){
@@ -42,12 +45,18 @@ class Image
     {
         return $this->local_filepath;
     }
-
+    function set_box($box){
+        $this->box = $box;
+    }
     function get_box()
     {
         return $this->box;
     }
-
+    function get_box_parse()
+    {
+        $box = $this->box;
+        return $box->x1.",".$box->y1.",".$box->x2.",".$box->y2;
+    }
     function is_http_image() {
         if(is_string($this->local_filepath))
             return $this->__startsWith($this->local_filepath,"http://") || $this->__startsWith($this->local_filepath,"https://");
