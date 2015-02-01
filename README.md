@@ -1,4 +1,6 @@
-ViSearch PHP SDK
+#ViSearch PHP SDK
+[![Build Status](https://travis-ci.org/visenze/visearch-sdk-php.svg?branch=master)](https://travis-ci.org/visenze/visearch-sdk-php)
+
 ----
 ##Table of Contents
  1. [Overview](#1-overview)
@@ -21,7 +23,8 @@ ViSearch PHP SDK
 	  - 7.2 [Filtering Results](#72-filtering-results)
 	  - 7.3 [Result Score](#73-result-score)
  8. [Code Samples](#8-code-samples)
- 
+ ----
+
 ##1. Overview
 ViSearch is an API that provides accurate, reliable and scalable image search. ViSearch API provides endpoints that let developers index their images and perform image searches efficiently. ViSearch API can be easily integrated into your web and mobile applications. More details about ViSearch API can be found in the [documentation](http://www.visenze.com/docs/overview/introduction).
 
