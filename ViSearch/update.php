@@ -3,10 +3,10 @@
 require_once 'base_request.php';
 
 
-class InsertService extends ViSearchBaseRequest
+class UpdateService extends ViSearchBaseRequest
 {
     //
-    // constructor for InsertService
+    // constructor for UpdateService
     //   
     function __construct($access_key=NULL, $secret_key=NULL)
     {
@@ -23,7 +23,7 @@ class InsertService extends ViSearchBaseRequest
      *      array("im_name"=>"xxxx4","im_url"=>"xxxx4")
      *  );
      */
-    function insert($images=array()){
+    function update($images=array()){
         $i=0;
         $params = array();
         foreach ($images as $image) {
