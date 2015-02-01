@@ -7,7 +7,8 @@ ViSearch PHP SDK
  4. [Indexing Images](#4-indexing-images)
 	  - 4.1 [Indexing Your First Images](#41-indexing-your-first-images)
 	  - 4.2 [Image with Metadata](#42-image-with-metadata)
-	  - 4.3 [Removing Images](#43-removing-images)
+	  - 4.3 [Updating Images](#43-updating-images)
+	  - 4.4 [Removing Images](#44-removing-images)
  5. [Searching Images](#5-searching-images)
 	  - 5.1 [Pre-indexed Search](#51-pre-indexed-search)
 	  - 5.2 [Color Search](#52-color-search)
@@ -28,34 +29,26 @@ The ViSearch PHP SDK is an open source software for easy integration of ViSearch
 
  Current stable version: 1.0.0
  
- Mininum requirement: php5 and php5-curl
+ Minimum requirement: php5 and php5-curl
 
 ##2. Setup
-You can get the soruce code of the SDK and demos from the [github repo](https://github.com/visenze/visearch-sdk-php).
+You can get the source code of the SDK and demos from the [Github repo](https://github.com/visenze/visearch-sdk-php).
 
 Download the [ViSearch SDK](https://github.com/visenze/visearch-sdk-php) and place the ViSearch to your project directory.
 
-Include relavant services into your project.
+Include ViSearch API into your project.
 
 ````
-//For ViSearch Search API
-require_once 'pathTo/ViSearch/search.php';
-//For ViSearch Data Insert API
-require_once 'pathTo/ViSearch/insert.php';
-//For ViSearch Data Remove API
-require_once 'pathTo/ViSearch/remove.php';
+//To Include ViSearch API
+require_once 'pathTo/ViSearch/viSearch.php';
 ````
 
 ##3. Initialization
 To start using ViSearch API, initialize ViSearch client with your ViSearch API credentials. Your credentials can be found in [ViSearch Dashboard](https://dashboard.visenze.com):
 
 ````
-//To Use ViSearch Search API
-$service = new SearchService($access_key,$secret_key);
-//To Use ViSearch Data Insert API
-$service = new InsertService($access_key,$secret_key);
-//To Use ViSearch Data Remove API
-$service = new RemoveService($access_key,$secret_key);
+//To Use ViSearch API
+$service = new ViSearch($access_key,$secret_key);
 
 ````
 ##4. Indexing Images
@@ -68,7 +61,6 @@ Built for scalability, ViSearch API enables fast and accurate searches on high v
 To index your images, prepare a list of Images and call the /insert endpoint. 
 
 ````
-$service = new InsertService($access_key,$secret_key);
 
 // the list of images to be indexed
 $images = array();
@@ -111,15 +103,23 @@ $response = $service->insert($images);
 `````
 Metadata keys are case-sensitive, and metadata without a matching key in the schema will not be processed by ViSearch. Make sure to configure metadata schema for all of your metadata keys.
 
+###4.3 Updating Images
 
-###4.3 Removing Images
+If you need to update an image or its metadata, call the ```insert``` endpoint with the same unique identifier of the image. ViSearch will fetch the image from the updated URL and index the new image, and replace the metadata of the image if provided.
+
+````
+$images[] = array('im_name'=>'blue_dress','im_url'=>'http://mydomain.com/images/blue_dress.jpg','title'=>'Blue Dress', 'description'=>'A blue dress', 'price'=> 100.0f);
+// calls the /insert endpoint to index the image
+$response = $service->update($images);
+`````
+
+ > Each ```insert``` call to ViSearch accepts a maximum of 100 images. We recommend updating your images in batches of 100 for optimized image indexing speed.
+
+###4.4 Removing Images
 
 In case you decide to remove some of the indexed images, you can call the /remove endpoint with the list of unique identifier of the indexed images. ViSearch will then remove the specified images from the index. You will not be able to perform pre-indexed search on this image, and the image will not be found in any search result.
 
 ````
-// the list of unique identifiers 'im_name' of the images to be removed
-$service = new RemoveService($access_key,$secret_key);
-
 $response = $service->remove(array("red_dress","blue_dress"));
 ````
 
@@ -131,7 +131,7 @@ $response = $service->remove(array("red_dress","blue_dress"));
 Pre-index search is to search similar images based on the your indexed image by its unique identifier (im_name). It  should be a valid ID that is used to index your images in the database.
 
 ````
-$service = new SearchService($access_key,$secret_key);
+$service = new ViSearch($access_key,$secret_key);
 $service->idsearch("blue_dress");
 ````
 

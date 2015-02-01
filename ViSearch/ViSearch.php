@@ -3,7 +3,7 @@
 require_once 'base_request.php';
 
 
-class SearchService extends ViSearchBaseRequest
+class ViSearch extends ViSearchBaseRequest
 {
     //
     // constructor for SearchService
@@ -122,6 +122,77 @@ class SearchService extends ViSearchBaseRequest
             $params['image'] = "@{$image->local_filepath}";
             return $this->post_multipart('uploadsearch', $params);
         }
+    }
+    /**
+     * insert images
+     * @$images is an array list of array
+     *  array(
+     *      array("im_name"=>"xxxx1","im_url"=>"xxxx1"),
+     *      array("im_name"=>"xxxx2","im_url"=>"xxxx2"),
+     *      array("im_name"=>"xxxx3","im_url"=>"xxxx3"),
+     *      array("im_name"=>"xxxx4","im_url"=>"xxxx4")
+     *  );
+     */
+    function insert($images=array()){
+        $i=0;
+        $params = array();
+        foreach ($images as $image) {
+            foreach ($image as $key => $value) {
+                $param_key = $key."[".$i."]";
+                $params[$param_key] = $value;
+            }
+           $i++;
+        }
+        return $this->post('insert', $params);
+    }
+     /**
+     * update images
+     * @$images is an array list of array
+     *  array(
+     *      array("im_name"=>"xxxx1","im_url"=>"xxxx1"),
+     *      array("im_name"=>"xxxx2","im_url"=>"xxxx2"),
+     *      array("im_name"=>"xxxx3","im_url"=>"xxxx3"),
+     *      array("im_name"=>"xxxx4","im_url"=>"xxxx4")
+     *  );
+     */
+    function update($images=array()){
+        $i=0;
+        $params = array();
+        foreach ($images as $image) {
+            foreach ($image as $key => $value) {
+                $param_key = $key."[".$i."]";
+                $params[$param_key] = $value;
+            }
+           $i++;
+        }
+        return $this->post('insert', $params);
+    }
+    /**
+     * This API is for removing images from the image collection.
+     * @$im_names, image names list.
+     *      this parameter should be like this:
+     *      array(
+     *           "xxxxxx1",
+     *           "xxxxxx2"
+     *      )
+     */
+    function remove($im_names=array()){
+        $params = array();
+        $i=0;
+        foreach ($im_names as $im_name) {
+           $key = "im_names[".$i."]";
+           $params[$key]=$im_name;
+           $i++;
+        }
+
+        return $this->post('remove', $params);
+    }
+    /**
+     * Insert Status
+     * This API is for retrieving the insert processing status for an insert transaction.
+     */
+    function insert_status($trans_id=''){
+        return $this->get('insert/status/'.$trans_id);
     }
 }
 ?>
