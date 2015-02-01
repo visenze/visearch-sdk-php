@@ -1,7 +1,7 @@
 
 <?php
 
-require_once '../ViSearch/viSearch.php';
+require_once '../ViSearch/ViSearch.php';
 
 $access_key = '******';
 $secret_key = '******';
