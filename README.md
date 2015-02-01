@@ -22,9 +22,9 @@ ViSearch PHP SDK
  8. [Code Samples](#8-code-samples)
  
 ##1. Overview
-ViSearch is an API that provides accurate, reliable and scalable image search. ViSearch API provides two services ( Data API and Search API) to let the developers prepare image database and perform image searches efficiently. ViSearch API can be easily integrated into your web and mobile applications. More details about ViSearch API can be found in the [documentation](http://www.visenze.com/docs/overview/introduction).
+ViSearch is an API that provides accurate, reliable and scalable image search. ViSearch API provides endpoints that let developers index their images and perform image searches efficiently. ViSearch API can be easily integrated into your web and mobile applications. More details about ViSearch API can be found in the [documentation](http://www.visenze.com/docs/overview/introduction).
 
-The ViSearch PHP SDK is an open source software for easy integartion of ViSearch Search API with your application server. It provides three search methods based on the ViSearch Search API - pre-indexed search, color search and upload search. The ViSearch PHP SDK also provides an easy integration of the ViSearch Data API which includes data inserting and data removing. For source code and references, visit the github [repository](https://github.com/visenze/visearch-sdk-php).
+The ViSearch PHP SDK is an open source software for easy integration of ViSearch Search API with your application server. It provides three search methods based on the ViSearch Search API - pre-indexed search, color search and upload search. The ViSearch PHP SDK also provides an easy integration of the ViSearch Data API which includes data inserting and data removing. For source code and references, visit the github [repository](https://github.com/visenze/visearch-sdk-php).
 
  Current stable version: 1.0.0
  
@@ -38,7 +38,6 @@ Download the [ViSearch SDK](https://github.com/visenze/visearch-sdk-php) and pla
 Include relavant services into your project.
 
 ````
-<?php
 //For ViSearch Search API
 require_once 'pathTo/ViSearch/search.php';
 //For ViSearch Data Insert API
@@ -64,7 +63,7 @@ $service = new RemoveService($access_key,$secret_key);
 
 ###4.1 Indexing Your First Images
 
-Built for scalability, ViSearch API enables fast and accurate searches on high volume of images. Before making your first image search, you need to prepare a list of images and index them into ViSearch by calling the /insert endpoint. Each image must have a unique identifier and a publicly downloadable URL. ViSearch will parallelly fetch your images from the given URLs, and index the downloaded for searching. After the image indexes are built, you can start searching for similar images using the unique identifier (link to Pre-indexed Search section), using a color (link to Color Search Section), or using another image (link to Upload Search Section).
+Built for scalability, ViSearch API enables fast and accurate searches on high volume of images. Before making your first image search, you need to prepare a list of images and index them into ViSearch by calling the /insert endpoint. Each image must have a unique identifier and a publicly downloadable URL. ViSearch will parallelly fetch your images from the given URLs, and index the downloaded for searching. After the image indexes are built, you can start searching for [similar images using the unique identifier] (https://github.com/visenze/visearch-sdk-java/blob/master/README.md#51-pre-indexed-search), [using a color] (https://github.com/visenze/visearch-sdk-java/blob/master/README.md#52-color-search), or [using another image] (https://github.com/visenze/visearch-sdk-java/blob/master/README.md#53-upload-search).
 
 To index your images, prepare a list of Images and call the /insert endpoint. 
 
@@ -79,7 +78,7 @@ $images[] = array('im_name'=>'blue_dress','im_url'=>'http://mydomain.com/images/
 // calls the /insert endpoint to index the image
 $response = $service->insert($images);
 ````
-Each /insert call allows up to 100 images in the list. We recommend calling /insert in batches of 100 images for optimized image indexing speed.
+ > Each ```insert``` call to ViSearch accepts a maximum of 100 images. We recommend indexing your images in batches of 100 for optimized image indexing speed.
 
 
 ###4.2 Image with Metadata
@@ -91,7 +90,7 @@ caption, tags, geo-coordinates of a photo.
 ViSearch combines the power of text search with image search. You can index your images with metadata, and leverage text based query and filtering for even more accurate image search results, for example:
 limit results within a price range
 limit results to certain tags, and some keywords in the captions
-For detailed reference for result filtering, see Advanced Search Parameters (link to).
+For detailed reference for result filtering, see [Advanced Search Parameters](https://github.com/visenze/visearch-sdk-php/blob/master/README.md#7-advanced-search-parameters).
 
 To index your images with metadata, first you need to configure the metadata schema in ViSearch Dashboard (link to). You can add and remove metadata keys, and modify the metadata types to suit your needs.
 
@@ -124,7 +123,7 @@ $service = new RemoveService($access_key,$secret_key);
 $response = $service->remove(array("red_dress","blue_dress"));
 ````
 
-We recommend calling /remove in batches of 100 images for optimized image indexing speed.
+> We recommend calling ```remove``` in batches of 100 images for optimized image indexing speed.
 
 ##5. Searching Images
 
@@ -180,7 +179,7 @@ To reduce upload search latency, by default the uploadSearch method makes a copy
 
 ````
 $resizeSettings = new ResizeSettings();
-//default resize setting, set the image size to 512 x 512 with jpeg 85 quality
+//default resize setting, set the image size to 512 x 512 with jpeg 75 quality
 $image = new Image(imagePath, $resizeSettings);
 ````
 
@@ -271,4 +270,4 @@ $response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $score, $sco
 
 ##8. Code Samples
 
-Example code of the ViSearch PHP SDK can be found in [visearch-java-example](https://github.com/visenze/visearch-sdk-php).
+Example code of the ViSearch PHP SDK can be found in [visearch-php-example](https://github.com/visenze/visearch-sdk-php).
