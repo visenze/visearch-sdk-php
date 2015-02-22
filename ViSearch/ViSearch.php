@@ -112,7 +112,8 @@ class ViSearch extends ViSearchBaseRequest
             'score_max'=>$score_max,
             'score_min'=>$score_min
         );
-        if(!empty($image->get_box())){
+        _box = $image->get_box();
+        if(!empty(_box)){
             $params["box"] = $image->get_box_parse();
         }
         if($image -> is_http_image()){
