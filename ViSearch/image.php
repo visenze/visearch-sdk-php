@@ -4,7 +4,11 @@ require_once 'box.php';
 require_once 'resizeSettings.php';
 
 class ViSearchException extends Exception
-{}
+{
+    public function __construct($message = null, $code = 0, Exception $previous = null) {
+        parent::__construct($message, $code, $previous);
+    }
+}
 
 class Image
 {
@@ -16,7 +20,7 @@ class Image
     function __construct($file = '', $resizeSettings = NULL)
     {   
         if(empty($file)) {
-            throw ViSearchException("Please input a valid local image file path or http image url");
+            throw new ViSearchException("Please input a valid local image file path or http image url");
         }
         // $this->data = null;
         $this->resizeSettings = $resizeSettings;
