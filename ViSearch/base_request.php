@@ -6,10 +6,6 @@ require_once 'image.php';
 
 // make sure Requests can load internal classes
 Requests::register_autoloader();
-
-
-class ViSearchException extends Exception
-{}
  
 class ViSearchBaseRequest
 {

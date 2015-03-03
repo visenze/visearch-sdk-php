@@ -3,6 +3,9 @@
 require_once 'box.php';
 require_once 'resizeSettings.php';
 
+class ViSearchException extends Exception
+{}
+
 class Image
 {
     /// Construct an object describing an image.
