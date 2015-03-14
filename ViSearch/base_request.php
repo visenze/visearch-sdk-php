@@ -119,6 +119,12 @@ class ViSearchBaseRequest
         return 'Basic '.$base64String;
     }
 
+    // check if PHP array is associative or sequential?
+    protected function is_assoc($arr)
+    {
+        return array_keys($arr) !== range(0, count($arr) - 1);
+    }
+
     protected function ensure_multipart_parameters($params=array()) {
         foreach ($params as $key => $value) {
             if(is_bool($value)){
@@ -126,15 +132,24 @@ class ViSearchBaseRequest
                 $params["$key"]=$bool_res;
             }
             if(is_array($value)){
-                $numItems = count($arr);
+                $is_assoc = $this->is_assoc($value);
+                $numItems = count($value);
                 $i = 0;
                 $fls = "";
-                foreach ($value as &$param) {
-                    $fls.= $param;
-                    if(++$i != $numItems) {
+                foreach ($value as $p_key=>$p_val) {
+                    if(is_array($p_val)){
+                       continue;
+                    }
+                    if($is_assoc){
+                        $fls.= $p_key.':'.$p_val;
+                    }else{
+                        $fls.= $p_val;
+                    }
+                    if(++$i < $numItems) {
                         $fls.= ',';
                     }
                 }
+                $fls = rtrim($fls, ",");
                 $params["$key"]= $fls;
             }
         }
