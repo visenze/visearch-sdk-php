@@ -57,7 +57,11 @@ class Image
     }
     function get_box()
     {
-        return $this->box;
+        if(isset($this->box)){
+            return $this->box;
+        }else {
+            return NULL;
+        }
     }
     function get_box_parse()
     {
