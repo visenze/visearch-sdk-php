@@ -31,8 +31,9 @@ class ViSearch extends ViSearchBaseRequest
      *      ) 
      * @$page, The result page number.
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
+     * @get_all_fl, If the value is true, All field list will be returned in the query
      */
-    function idsearch($im_name=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0){
+    function idsearch($im_name=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0, $get_all_fl=false){
         $params = array(
             'im_name' => $im_name,
             'score'=> $score,
@@ -41,7 +42,8 @@ class ViSearch extends ViSearchBaseRequest
             'fq' => $fq,
             'fl' => $fl,
             'score_max'=>$score_max,
-            'score_min'=>$score_min
+            'score_min'=>$score_min,
+            'get_all_fl'=>$get_all_fl
         );
         return $this->get('search', $params);
     }
@@ -64,8 +66,9 @@ class ViSearch extends ViSearchBaseRequest
      *      ) 
      * @$page, The result page number.
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
+     * @get_all_fl, If the value is true, All field list will be returned in the query
      */
-    function colorsearch($color=NULL,$page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0){
+    function colorsearch($color=NULL,$page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0, $get_all_fl=false){
         $params = array(
             'color' => $color,
             'score'=> $score,
@@ -74,7 +77,8 @@ class ViSearch extends ViSearchBaseRequest
             'fq' => $fq,
             'fl' => $fl,
             'score_max'=>$score_max,
-            'score_min'=>$score_min
+            'score_min'=>$score_min,
+            'get_all_fl'=>$get_all_fl
         );
         return $this->get('colorsearch', $params);
     }
@@ -98,8 +102,9 @@ class ViSearch extends ViSearchBaseRequest
      *      ) 
      * @$page, The result page number.
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
+     * @get_all_fl, If the value is true, All field list will be returned in the query
      */
-    function uploadsearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0){
+    function uploadsearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0, $get_all_fl=false){
        if (!gettype($image) == 'object' || !get_class($image) == 'Image')
         throw new ViSearchException('Need to pass a image object');
 
@@ -110,7 +115,8 @@ class ViSearch extends ViSearchBaseRequest
             'fq' => $fq,
             'fl' => $fl,
             'score_max'=>$score_max,
-            'score_min'=>$score_min
+            'score_min'=>$score_min,
+            'get_all_fl'=>$get_all_fl
         );
         $box = $image->get_box();
         if(!empty($box)){
