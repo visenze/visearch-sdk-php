@@ -33,7 +33,7 @@ class ViSearch extends ViSearchBaseRequest
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @get_all_fl, If the value is true, All field list will be returned in the query
      */
-    function idsearch($im_name=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0, $get_all_fl=false){
+    function idsearch($im_name=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0){
         $params = array(
             'im_name' => $im_name,
             'score'=> $score,
@@ -68,7 +68,7 @@ class ViSearch extends ViSearchBaseRequest
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @get_all_fl, If the value is true, All field list will be returned in the query
      */
-    function colorsearch($color=NULL,$page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0, $get_all_fl=false){
+    function colorsearch($color=NULL,$page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0){
         $params = array(
             'color' => $color,
             'score'=> $score,
@@ -104,7 +104,7 @@ class ViSearch extends ViSearchBaseRequest
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @get_all_fl, If the value is true, All field list will be returned in the query
      */
-    function uploadsearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $score=false, $score_max=1, $score_min=0, $get_all_fl=false, $detection=NULL){
+    function uploadsearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0, $detection=NULL){
        if (!gettype($image) == 'object' || !get_class($image) == 'Image')
         throw new ViSearchException('Need to pass a image object');
 
