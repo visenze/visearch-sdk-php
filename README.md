@@ -295,7 +295,7 @@ You could also recognize objects from a paticular type on the uploaded query ima
 Sample request to detect `bag` in an uploaded image:
 
 ```
-$detection = 'all';
+$detection = 'bag';
 $response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $get_all_fl, $score, $score_max, $score_min, $detection);
 ```
 
