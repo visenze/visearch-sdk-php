@@ -22,6 +22,7 @@
 	  - 7.1 [Retrieving Metadata](#71-retrieving-metadata)
 	  - 7.2 [Filtering Results](#72-filtering-results)
 	  - 7.3 [Result Score](#73-result-score)
+	  - 7.4 [Automatic Object Recognition Beta](#74-object-recognition)
  8. [Code Samples](#8-code-samples)
  ----
 
@@ -229,6 +230,13 @@ $fl = array("price","brand","title","im_url");
 $response = $service->uploadsearch($image, $page, $limit, $fl);
 ````
 
+To retrieve all metadata of your image results, specify ```get_all_fl``` parameter and set it to ```True```:
+
+```
+$get_all_fl = True
+$response = $service->uploadsearch($image, $page, $limit, $fl, $get_all_fl);
+```
+
  > Only metadata of type string, int, and float can be retrieved from ViSearch. Metadata of type text is not available for retrieval.
 
 ###7.2 Filtering Results
@@ -255,7 +263,7 @@ ViSearch image search results are ranked in descending order i.e. from the highe
 
 ````
 $score = true;
-$response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $score);
+$response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $get_all_fl, $score);
 ````
 
 If you need to restrict search results from a minimum score to a maximum score, specify the ```score_min``` and/or ```score_max``` parameters:
@@ -268,8 +276,30 @@ score_max | Float | Maximum score for the image results. Default is 1.0.
 ````
 $score_min = 0.5;
 $score_max = 0.8;
-$response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $score, $score_max, $score_min);
+$response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $get_all_fl, $score, $score_max, $score_min);
 ````
+###7.4 Automatic Object Recognition Beta
+With Automatic Object Recognition, ViSearch /uploadsearch API is smart to detect the objects present in the query image and suggest the best matched product type to run the search on. 
+
+You can turn on the feature in upload search by setting the API parameter "detection=all". We are now able to detect various types of fashion items, including `Top`, `Dress`, `Bottom`, `Shoe`, `Bag`, `Watch` and `Indian Ethnic Wear`. The list is ever-expanding as we explore this feature for other categories. 
+
+Notice: This feature is currently available for fashion application type only. You will need to make sure your app type is configurated as "fashion" on [ViSenze dashboard](https://developers.visenze.com/setup/#Choose-Your-Application-Type). 
+
+```
+$detection = 'all';
+$response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $get_all_fl, $score, $score_max, $score_min, $detection);
+```
+
+You could also recognize objects from a paticular type on the uploaded query image through configuring the detection parameter to a specific product type as "detection={type}". Our API will run the search within that product type.
+
+Sample request to detect `bag` in an uploaded image:
+
+```
+$detection = 'all';
+$response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $get_all_fl, $score, $score_max, $score_min, $detection);
+```
+
+The detected product types are listed in `product_types` together with the match score and box area of the detected object. Multiple objects can be detected from the query image and they are ranked from the highest score to lowest. The full list of supported product types by our API will also be returned in `product_types_list`. 
 
 ##8. Code Samples
 
