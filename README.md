@@ -234,7 +234,8 @@ To retrieve all metadata of your image results, specify ```get_all_fl``` paramet
 
 ```
 $get_all_fl = True
-$response = $service->uploadsearch($image, $page, $limit, $fl, $get_all_fl);
+$fq = array();
+$response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $get_all_fl);
 ```
 
  > Only metadata of type string, int, and float can be retrieved from ViSearch. Metadata of type text is not available for retrieval.
