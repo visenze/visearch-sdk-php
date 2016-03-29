@@ -152,7 +152,7 @@ Upload search is used to search similar images by uploading an image or providin
 Using an image from a local file path
 
 ````
-$image = new Image(imagePath);
+$image = new Image($imagePath);
 $response = $service->uploadsearch($image);
 ````
 
@@ -163,7 +163,8 @@ $image = new Image('http://mydomain.com/images/red_dress.jpg');
 $response = $service->uploadsearch($image);
 ````
 
-If you are performing refinement on an uploaded image, you can pass the im_id returned in the search result to start the search instead of uploading the image again:
+If you are performing refinement on an uploaded image, you can pass the im_id returned in the search result to start the search instead of uploading the image again.
+Note that in the presence of both im_id and image file path or url, im_id will be considered as the image for the uploadsearch.
 
 Sample response:
 ````
@@ -187,9 +188,14 @@ $response = $service->uploadsearch($image);
 
 //get im_id from previous request
 $im_id = $response->im_id;
-$image->set_im_id($im_id);
-$response = $service->uploadsearch($image);
+
+//you may create a new Image object and set the im_id or use previous Image object
+//to set the file path for new Image object, use this: $new_image->set_file_path(image_path)
+$new_image = new Image();
+$new_image->set_im_id($im_id);
+$response = $service->uploadsearch($new_image);
 ````
+
 
 ####5.3.1 Selection Box
 
