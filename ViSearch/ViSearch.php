@@ -108,6 +108,9 @@ class ViSearch extends ViSearchBaseRequest
        if (!gettype($image) == 'object' || !get_class($image) == 'Image')
         throw new ViSearchException('Need to pass a image object');
 
+        if(!$image->is_valid_image())
+            throw new ViSearchException("Please input a valid local image file path or http image url or im_id");
+
         $params = array(
             'score'=> $score,
             'page'=> $page,
