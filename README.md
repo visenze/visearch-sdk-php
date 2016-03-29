@@ -163,6 +163,33 @@ $image = new Image('http://mydomain.com/images/red_dress.jpg');
 $response = $service->uploadsearch($image);
 ````
 
+If you are performing refinement on an uploaded image, you can pass the im_id returned in the search result to start the search instead of uploading the image again:
+
+Sample response:
+````
+{
+    "status": "OK",
+    "method": "uploadsearch",
+    "error": [
+
+    ],
+    "page": 1,
+    "limit": 10,
+    "total": 1000,
+    "result": [
+        .....
+    ],
+    "im_id": "634b3958037f12a.jpg"
+}
+```
+Sample code:
+````
+$image = new Image('http://mydomain.com/images/red_dress.jpg');
+$response = $service->uploadsearch($image);
+$im_id = $response->im_id;
+$response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $get_all_fl, $score, $score_max, $score_min, $detection, $im_id);
+````
+
 ####5.3.1 Selection Box
 
 If the object you wish to search for takes up only a small portion of your image, or other irrelevant objects exists in the same image, chances are the search result could become inaccurate. Use the Box parameter to refine the search area of the image to improve accuracy. Noted that the box coordinated is setted with respect to the original size of the image passed, it will be automatically scaled to fit the resized image for uploading:
