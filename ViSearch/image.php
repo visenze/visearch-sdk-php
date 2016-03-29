@@ -16,14 +16,34 @@ class Image
 
     /// Arguments:
     /// `file`, the path to the image, if it is to be taken from a file. or a upload file object
-    ///
     function __construct($file = '', $resizeSettings = NULL)
     {   
-        if(empty($file)) {
-            throw new ViSearchException("Please input a valid local image file path or http image url");
+        if(!empty($file)) {
+            $this->resizeSettings = $resizeSettings;
+            $this->local_filepath = $file;
+            if( ! $this->is_http_image($file)){
+                if(is_string($file) && !$this->__startsWith($file,'/') ){
+                    // a relative file
+                    $this->local_filepath = realpath(dirname($_SERVER["SCRIPT_FILENAME"])).'/'.$file;
+                }else if(is_array($file) && array_key_exists('tmp_name', $file) ){
+                    $this->local_filepath = $file['tmp_name'];
+                }
+            }
         }
-        // $this->data = null;
-        $this->resizeSettings = $resizeSettings;
+    }
+
+    /// Return a human-readable description of the object.
+    function __toString()
+    {
+        return "Image(local_filepath=$this->local_filepath)";
+    }
+
+    function __startsWith($haystack, $needle)
+    {
+        return $needle === "" || strpos($haystack, $needle) === 0;
+    }
+
+    function set_file_path($file) {
         $this->local_filepath = $file;
         if( ! $this->is_http_image($file)){
             if(is_string($file) && !$this->__startsWith($file,'/') ){
@@ -35,17 +55,8 @@ class Image
         }
     }
 
-    ///
-    /// Return a human-readable description of the object.
-    ///
-    function __toString()
-    {
-        return "Image(local_filepath=$this->local_filepath)";
-    }
-
-    function __startsWith($haystack, $needle)
-    {
-        return $needle === "" || strpos($haystack, $needle) === 0;
+    function set_resize_setting($resize_setting) {
+        $this->resizeSettings = $resizeSettings;
     }
 
     function get_path() 
@@ -73,6 +84,27 @@ class Image
             return $this->__startsWith($this->local_filepath,"http://") || $this->__startsWith($this->local_filepath,"https://");
         else
             return false;
+    }
+
+    function is_valid_image() {
+        if(!isset($this->im_id) && !isset($this->local_filepath))
+            return false;
+        else
+            return true;
+    }
+
+    function get_im_id() {
+        if(isset($this->im_id)){
+            return $this->im_id;
+        }else {
+            return NULL;
+        }
+    }
+
+    function set_im_id($im_id) {
+        if(empty($im_id) && !is_null($im_id))
+            throw new ViSearchException('Empty im_id');
+        $this->im_id = $im_id;
     }
 }
 
