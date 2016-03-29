@@ -170,9 +170,7 @@ Sample response:
 {
     "status": "OK",
     "method": "uploadsearch",
-    "error": [
-
-    ],
+    "error": [],
     "page": 1,
     "limit": 10,
     "total": 1000,
@@ -186,8 +184,11 @@ Sample code:
 ````
 $image = new Image('http://mydomain.com/images/red_dress.jpg');
 $response = $service->uploadsearch($image);
+
+//get im_id from previous request
 $im_id = $response->im_id;
-$response = $service->uploadsearch($image, $page, $limit, $fl, $fq, $get_all_fl, $score, $score_max, $score_min, $detection, $im_id);
+$image->set_im_id($im_id);
+$response = $service->uploadsearch($image);
 ````
 
 ####5.3.1 Selection Box
