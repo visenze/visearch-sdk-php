@@ -104,7 +104,7 @@ class ViSearch extends ViSearchBaseRequest
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @get_all_fl, If the value is true, All field list will be returned in the query
      */
-    function uploadsearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0, $detection=NULL, $im_id=""){
+    function uploadsearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0, $detection=NULL){
        if (!gettype($image) == 'object' || !get_class($image) == 'Image')
         throw new ViSearchException('Need to pass a image object');
 
@@ -120,15 +120,17 @@ class ViSearch extends ViSearchBaseRequest
             'detection'=>$detection
         );
 
-        if(!empty($im_id)) {
-            $params["im_id"] = $im_id;
-        }
-
         $box = $image->get_box();
         if(!empty($box)){
             $params["box"] = $image->get_box_parse();
         }
-        if($image -> is_http_image()){
+
+        $im_id = $image->get_im_id();
+
+        if(!empty($im_id)) {
+            $params["im_id"] = $im_id;
+            return $this->get('uploadsearch', $params);
+        } else if ($image -> is_http_image()){
             $params["im_url"]= $image->get_path();
             return $this->get('uploadsearch', $params);
         }else {

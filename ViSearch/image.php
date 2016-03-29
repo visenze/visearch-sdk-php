@@ -74,6 +74,20 @@ class Image
         else
             return false;
     }
+
+    function get_im_id() {
+        if(isset($this->im_id)){
+            return $this->im_id;
+        }else {
+            return NULL;
+        }
+    }
+
+    function set_im_id($im_id) {
+        if(empty($im_id) && !is_null($im_id))
+            throw new ViSearchException('Empty im_id');
+        $this->im_id = $im_id;
+    }
 }
 
 ?>
