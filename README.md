@@ -31,7 +31,7 @@ ViSearch is an API that provides accurate, reliable and scalable image search. V
 
 The ViSearch PHP SDK is an open source software for easy integration of ViSearch Search API with your application server. It provides three search methods based on the ViSearch Search API - pre-indexed search, color search and upload search. The ViSearch PHP SDK also provides an easy integration of the ViSearch Data API which includes data inserting and data removing. For source code and references, visit the github [repository](https://github.com/visenze/visearch-sdk-php).
 
- Current stable version: 1.0.0
+ Current stable version: 1.0.1
  
  Minimum requirement: php5 and php5-curl
 
