@@ -187,18 +187,18 @@ class ViSearch extends ViSearchBaseRequest
     }
     /**
      * This API is for removing images from the image collection.
-     * @$im_names, image names list.
+     * @$image_names, list of im_name.
      *      this parameter should be like this:
      *      array(
      *           "xxxxxx1",
      *           "xxxxxx2"
      *      )
      */
-    function remove($im_names=array()){
+    function remove($image_names=array()){
         $params = array();
         $i=0;
-        foreach ($im_names as $im_name) {
-           $key = "im_names[".$i."]";
+        foreach ($image_names as $im_name) {
+           $key = "im_name[".$i."]";
            $params[$key]=$im_name;
            $i++;
         }
