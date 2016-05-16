@@ -137,7 +137,12 @@ class ViSearch extends ViSearchBaseRequest
             $params["im_url"]= $image->get_path();
             return $this->get('uploadsearch', $params);
         }else {
-            $params['image'] = new CURLFile(realpath($image->local_filepath));
+            if (class_exists('CURLFile')) {
+                $params['image'] = new CURLFile(realpath($image->local_filepath));
+            } else {
+                $params['image'] = "@{$image->local_filepath}";
+            }
+
             return $this->post_multipart('uploadsearch', $params);
         }
     }
