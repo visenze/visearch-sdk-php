@@ -3,20 +3,26 @@
 
 require_once '../ViSearch/ViSearch.php';
 
-$access_key = '******';
-$secret_key = '******';
+$access_key = 'ACCESS_KEY';
+$secret_key = 'SECRET_KEY';
 
 $service = new ViSearch($access_key,$secret_key);
+
+echo "\n############################################\n";
+echo "# recommendation testing\n";
+echo "############################################\n";
+$fl = array('im_url');
+$response = $service->recommendation("IM_NAME",true, NULL, $fl);
+// output the response
+$service->print_json($response );
 
 echo "\n############################################\n";
 echo "# idsearch testing\n";
 echo "############################################\n";
 
-$response = $service->idsearch("theoutnet.com-354490",true, NULL, array("price","brand"));
+$response = $service->idsearch("IM_NAME");
 // output the response
-$service->print_json($response );
-
-
+$service->print_json($response);
 
 echo "\n############################################\n";
 echo "# colorsearch testing\n";
@@ -25,7 +31,6 @@ echo "############################################\n";
 $response = $service->colorsearch("fa4d4d");
 // output the response
 $service->print_json($response );
-
 
 echo "\n############################################\n";
 echo "# uploadsearch testing\n";

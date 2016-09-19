@@ -12,9 +12,44 @@ class ViSearch extends ViSearchBaseRequest
     {
         parent::__construct($access_key, $secret_key);
     }
+
+    /**
+     * recommendation
+     * @$im_name, The image name of the image to search against the image collection.
+     * @$score, If the value is true, the scores for each returned image will be included in the response.
+     * @$fq, The metadata fields to filter the results. Only fields marked with ‘searchable’ in ViSearch Dashboard can be used as filters.
+     *      this parameter should be like this:
+     *      array(
+     *           "brand" => "my_brand",
+     *           "price" => "0,199"
+     *      )
+     * @$fl, The metadata fields to be returned. The values are returned in the value_map property of the results.
+     *      this parameter should be like this:
+     *      array(
+     *           "brand",
+     *           "price"
+     *      ) 
+     * @$page, The result page number.
+     * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
+     * @get_all_fl, If the value is true, All field list will be returned in the query
+    */
+    function recommendation($im_name=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0){
+        $params = array(
+            'im_name' => $im_name,
+            'score'=> $score,
+            'page'=> $page,
+            'limit' => $limit,
+            'fq' => $fq,
+            'fl' => $fl,
+            'score_max'=>$score_max,
+            'score_min'=>$score_min,
+            'get_all_fl'=>$get_all_fl
+        );
+        return $this->get('recommendation', $params);
+    }
    
     /**
-     * idsearch
+     * search
      * @$im_name, The image name of the image to search against the image collection.
      * @$score, If the value is true, the scores for each returned image will be included in the response.
      * @$fq, The metadata fields to filter the results. Only fields marked with ‘searchable’ in ViSearch Dashboard can be used as filters.
@@ -33,7 +68,7 @@ class ViSearch extends ViSearchBaseRequest
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @get_all_fl, If the value is true, All field list will be returned in the query
      */
-    function idsearch($im_name=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0){
+    function search($im_name=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0){
         $params = array(
             'im_name' => $im_name,
             'score'=> $score,
