@@ -3,8 +3,12 @@
 
 require_once '../ViSearch/ViSearch.php';
 
-$access_key = 'ACCESS_KEY';
-$secret_key = 'SECRET_KEY';
+//execute with the following commands
+// php viSearch_sample.php ACCESS_KEY SECRET_KEY IM_NAME
+
+$access_key = $argv[1]; //ACCESS_KEY
+$secret_key = $argv[2]; //SECRET_KEY
+$im_name = $argv[3]; //IM_NAME
 
 $service = new ViSearch($access_key,$secret_key);
 
@@ -12,7 +16,7 @@ echo "\n############################################\n";
 echo "# recommendation testing\n";
 echo "############################################\n";
 $fl = array('im_url');
-$response = $service->recommendation("IM_NAME",true, NULL, $fl);
+$response = $service->recommendation($im_name,true, NULL, $fl);
 // output the response
 $service->print_json($response );
 
@@ -20,7 +24,7 @@ echo "\n############################################\n";
 echo "# idsearch testing\n";
 echo "############################################\n";
 
-$response = $service->search("IM_NAME");
+$response = $service->search($im_name);
 // output the response
 $service->print_json($response);
 
@@ -60,9 +64,9 @@ $images = array();
 $images[] = array('im_name'=>'897412111','im_url'=>'http://www.elle.com.hk/var/ellehk/storage/images/fashion/street_snap/fashion-week-ss14-sneakers/style20/12207525-1-chi-HK/Style20.jpg');
 // images2
 $images[] = array('im_name'=>'897412112','im_url'=>'http://www.elle.com.hk/var/ellehk/storage/images/fashion/street_snap/fashion-week-ss14-sneakers/style20/12207525-1-chi-HK/Style20.jpg');
-$response = $service->insert($images);
+// $response = $service->insert($images);
 // output the response
-$service->print_json($response );
+// $service->print_json($response );
 
 echo "\n############################################\n";
 echo "# update image testing\n";
@@ -73,9 +77,9 @@ $images = array();
 $images[] = array('im_name'=>'897412111','im_url'=>'http://www.elle.com.hk/var/ellehk/storage/images/fashion/street_snap/fashion-week-ss14-sneakers/style20/12207525-1-chi-HK/Style20.jpg');
 // images2
 $images[] = array('im_name'=>'897412112','im_url'=>'http://www.elle.com.hk/var/ellehk/storage/images/fashion/street_snap/fashion-week-ss14-sneakers/style20/12207525-1-chi-HK/Style20.jpg');
-$response = $service->update($images);
+// $response = $service->update($images);
 // output the response
-$service->print_json($response );
+// $service->print_json($response );
 
 echo "\n############################################\n";
 echo "# insert status testing\n";
@@ -89,7 +93,7 @@ echo "\n############################################\n";
 echo "# remove image testing\n";
 echo "############################################\n";
 
-$response = $service->remove(array("897410","897411"));
+// $response = $service->remove(array("897410","897411"));
 // output the response
-$service->print_json($response );
+// $service->print_json($response );
 ?>
