@@ -3,20 +3,29 @@
 
 require_once '../ViSearch/ViSearch.php';
 
-$access_key = '******';
-$secret_key = '******';
+
+//replace the following with your access and secret key and im_name
+$access_key = getenv('ACCESS_KEY'); //ACCESS_KEY
+$secret_key = getenv('SECRET_KEY'); //SECRET_KEY
+$im_name = getenv('IM_NAME'); //IM_NAME
 
 $service = new ViSearch($access_key,$secret_key);
+
+echo "\n############################################\n";
+echo "# recommendation testing\n";
+echo "############################################\n";
+$fl = array('im_url');
+$response = $service->recommendation($im_name,true, NULL, $fl);
+// output the response
+$service->print_json($response );
 
 echo "\n############################################\n";
 echo "# idsearch testing\n";
 echo "############################################\n";
 
-$response = $service->idsearch("theoutnet.com-354490",true, NULL, array("price","brand"));
+$response = $service->search($im_name);
 // output the response
-$service->print_json($response );
-
-
+$service->print_json($response);
 
 echo "\n############################################\n";
 echo "# colorsearch testing\n";
@@ -25,7 +34,6 @@ echo "############################################\n";
 $response = $service->colorsearch("fa4d4d");
 // output the response
 $service->print_json($response );
-
 
 echo "\n############################################\n";
 echo "# uploadsearch testing\n";
@@ -55,9 +63,9 @@ $images = array();
 $images[] = array('im_name'=>'897412111','im_url'=>'http://www.elle.com.hk/var/ellehk/storage/images/fashion/street_snap/fashion-week-ss14-sneakers/style20/12207525-1-chi-HK/Style20.jpg');
 // images2
 $images[] = array('im_name'=>'897412112','im_url'=>'http://www.elle.com.hk/var/ellehk/storage/images/fashion/street_snap/fashion-week-ss14-sneakers/style20/12207525-1-chi-HK/Style20.jpg');
-$response = $service->insert($images);
+// $response = $service->insert($images);
 // output the response
-$service->print_json($response );
+// $service->print_json($response );
 
 echo "\n############################################\n";
 echo "# update image testing\n";
@@ -68,9 +76,9 @@ $images = array();
 $images[] = array('im_name'=>'897412111','im_url'=>'http://www.elle.com.hk/var/ellehk/storage/images/fashion/street_snap/fashion-week-ss14-sneakers/style20/12207525-1-chi-HK/Style20.jpg');
 // images2
 $images[] = array('im_name'=>'897412112','im_url'=>'http://www.elle.com.hk/var/ellehk/storage/images/fashion/street_snap/fashion-week-ss14-sneakers/style20/12207525-1-chi-HK/Style20.jpg');
-$response = $service->update($images);
+// $response = $service->update($images);
 // output the response
-$service->print_json($response );
+// $service->print_json($response );
 
 echo "\n############################################\n";
 echo "# insert status testing\n";
@@ -84,7 +92,7 @@ echo "\n############################################\n";
 echo "# remove image testing\n";
 echo "############################################\n";
 
-$response = $service->remove(array("897410","897411"));
+// $response = $service->remove(array("897410","897411"));
 // output the response
-$service->print_json($response );
+// $service->print_json($response );
 ?>

@@ -11,12 +11,14 @@
 	  - 4.2 [Image with Metadata](#42-image-with-metadata)
 	  - 4.3 [Updating Images](#43-updating-images)
 	  - 4.4 [Removing Images](#44-removing-images)
- 5. [Searching Images](#5-searching-images)
-	  - 5.1 [Pre-indexed Search](#51-pre-indexed-search)
-	  - 5.2 [Color Search](#52-color-search)
-	  - 5.3 [Upload Search](#53-upload-search)
-	    - 5.3.1 [Selection Box](#531-selection-box)
-	    - 5.3.2 [Resizing Settings](#532-resizing-settings)
+ 5. [Soluitons](#5-solutions)
+ 	  - 5.1 [Find Similar](#51-find-similar)
+      - 5.2 [You May Also Like](#52-you-may-also-like) 
+      - 5.3 [Search by Image](#53-search-by-image)
+        - 5.3.1 [Selection Box](#531-selection-box)
+        - 5.3.2 [Resizing Settings](#532-resizing-settings) 
+	  - 5.4 [Search by Color](#54-search-by-color)
+	    
  6. [Search Results](#6-search-results)
  7. [Advanced Search Parameters](#7-advanced-search-parameters)
 	  - 7.1 [Retrieving Metadata](#71-retrieving-metadata)
@@ -129,25 +131,26 @@ $response = $service->remove(array("red_dress","blue_dress"));
 
 > We recommend calling ```remove``` in batches of 100 images for optimized image indexing speed.
 
-##5. Searching Images
+##5. Solutions
 
-###5.1 Pre-indexed Search
-Pre-index search is to search similar images based on the your indexed image by its unique identifier (im_name). It  should be a valid ID that is used to index your images in the database.
+###5.1 Find Similar
+**Find similar** solution is to search for visually similar images in the image database giving an indexed image’s unique identifier (im_name).
 
 ````
 $service = new ViSearch($access_key,$secret_key);
-$service->idsearch("blue_dress");
+$service->search("blue_dress");
 ````
 
-###5.2 Color Search
-Color search is to search images with similar color by providing a color code. The color code should be in Hexadecimal and passed to the colorsearch service.
+###5.2 You May Also Like
+**You may also like** solution is to provide a list of recommended items from the indexed image database based on customizable rules giving an indexed image’s unique identifier (im_name). 
 
 ````
-$service->colorsearch("fa4d4d");
+$service = new ViSearch($access_key,$secret_key);
+$service->recommendation("blue_dress");
 ````
 
-###5.3 Upload Search
-Upload search is used to search similar images by uploading an image or providing an image url. `Image` class is used to perform the image encoding and resizing. You should construct the `Image` object and pass it to uploadsearch to start a search.
+###5.3 Search by Image
+**Search by image** solution is to search similar images by uploading an image or providing an image url. Image class is used to perform the image encoding and resizing. You should construct the Image object and pass it to uploadsearch to start a search.
 
 Using an image from a local file path
 
@@ -233,6 +236,14 @@ Or, provide the customized resize settings:
 ````
 //resize the image to 800 by 800 area using jpeg 80 quality
 $image = new Image(imagePath, new ResizeSettings(800, 800, 80));
+````
+
+###5.4 Color Search
+**Search by color** solution is to search images with similar color by providing a color code. The color code should be in Hexadecimal and passed to the colorsearch service.
+
+
+````
+$service->colorsearch("fa4d4d");
 ````
 
 ##6. Search Results
