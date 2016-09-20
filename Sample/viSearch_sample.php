@@ -20,7 +20,7 @@ echo "\n############################################\n";
 echo "# idsearch testing\n";
 echo "############################################\n";
 
-$response = $service->idsearch("IM_NAME");
+$response = $service->search("IM_NAME");
 // output the response
 $service->print_json($response);
 
