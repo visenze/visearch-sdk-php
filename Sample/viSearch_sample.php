@@ -3,12 +3,11 @@
 
 require_once '../ViSearch/ViSearch.php';
 
-//execute with the following commands
-// php viSearch_sample.php ACCESS_KEY SECRET_KEY IM_NAME
 
-$access_key = $argv[1]; //ACCESS_KEY
-$secret_key = $argv[2]; //SECRET_KEY
-$im_name = $argv[3]; //IM_NAME
+//replace the following with your access and secret key and im_name
+$access_key = getenv('ACCESS_KEY'); //ACCESS_KEY
+$secret_key = getenv('SECRET_KEY'); //SECRET_KEY
+$im_name = getenv('IM_NAME'); //IM_NAME
 
 $service = new ViSearch($access_key,$secret_key);
 

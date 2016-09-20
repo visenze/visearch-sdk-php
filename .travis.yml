@@ -4,4 +4,4 @@ php:
   - 5.4
   - hhvm
 script:
-  cd Sample && php viSearch_sample.php ad04601a1da3025441b452d8c244b304 f800718792cac4c883da02bb49f082be 4a9f07b3238ac0b5990d765e8340289e540361b8
+  cd Sample && php viSearch_sample.php
