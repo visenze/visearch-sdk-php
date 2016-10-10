@@ -98,12 +98,17 @@ class ViSearchBaseRequest
         if(!$headers){
             $headers = array();
         }
+
+        $image_param = array('image' => $params['image']);
+        unset($params['image']);
+        $url = $this->build_http_parameters($url,$params);
+
         $headers[]='Authorization: '.$auth_head;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,  $this->ensure_multipart_parameters($params) );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $image_param);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT,600);
         $result = curl_exec($ch);
