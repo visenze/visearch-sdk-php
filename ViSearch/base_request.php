@@ -74,8 +74,6 @@ class ViSearchBaseRequest
         }
         // set timeout
         $params['timeout'] = 10*60;
-        $params['useragent'] = self::SDK_VERSION;
-        $params['X-Requested-With'] = self::SDK_VERSION;
 
         $headers['Authorization']=$auth_head;
         $headers['X-Requested-With']=self::SDK_VERSION;
@@ -118,7 +116,6 @@ class ViSearchBaseRequest
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_USERAGENT,self::SDK_VERSION);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $image_param);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT,600);
