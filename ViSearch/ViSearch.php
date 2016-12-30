@@ -177,7 +177,6 @@ class ViSearch extends ViSearchBaseRequest
             } else {
                 $params['image'] = "@{$image->local_filepath}";
             }
-
             return $this->post_multipart('uploadsearch', $params);
         }
     }
