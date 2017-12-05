@@ -55,6 +55,24 @@ $response = $service->uploadsearch($image);
 $service->print_json($response );
 
 echo "\n############################################\n";
+echo "# discoversearch testing with image_url\n";
+echo "############################################\n";
+
+$image = new Image('http://cdn-static.cnet.co.uk/i/product_media/40001253/image1/440x330-iphone-5-main.jpg');
+$response = $service->discoversearch($image);
+// output the response
+$service->print_json($response );
+
+echo "\n############################################\n";
+echo "# discoversearch testing local file\n";
+echo "############################################\n";
+
+$image = new Image('test_file.png');
+$response = $service->discoversearch($image);
+// output the response
+$service->print_json($response );
+
+echo "\n############################################\n";
 echo "# insert image testing\n";
 echo "############################################\n";
 
