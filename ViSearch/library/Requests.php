@@ -314,6 +314,7 @@ class Requests {
 		else {
 			$transport = self::get_transport();
 		}
+		
 		$response = $transport->request($url, $headers, $data, $options);
 
 		$options['hooks']->dispatch('requests.before_parse', array(&$response, $url, $headers, $data, $type, $options));

@@ -12,13 +12,11 @@
 	  - 4.3 [Updating Images](#43-updating-images)
 	  - 4.4 [Removing Images](#44-removing-images)
  5. [Soluitons](#5-solutions)
- 	  - 5.1 [Find Similar](#51-find-similar)
-      - 5.2 [You May Also Like](#52-you-may-also-like) 
-      - 5.3 [Search by Image](#53-search-by-image)
-        - 5.3.1 [Selection Box](#531-selection-box)
-        - 5.3.2 [Resizing Settings](#532-resizing-settings) 
-	  - 5.4 [Search by Color](#54-search-by-color)
-	    
+ 	  - 5.1 [Visualy Similar Recommendations](#51-visualy-similar-recommendations)
+      - 5.2 [Search by Image](#52-search-by-image)
+        - 5.2.1 [Selection Box](#521-selection-box)
+	  - 5.3 [Search by Color](#53-search-by-color)
+      - 5.4 [Multiple Product Search](#54-multiple-product-search)
  6. [Search Results](#6-search-results)
  7. [Advanced Search Parameters](#7-advanced-search-parameters)
 	  - 7.1 [Retrieving Metadata](#71-retrieving-metadata)
@@ -106,7 +104,7 @@ Then index your image with title, decription, and price:
 $images[] = array('im_name'=>'blue_dress','im_url'=>'http://mydomain.com/images/blue_dress.jpg','title'=>'Blue Dress', 'description'=>'A blue dress', 'price'=> 100.0f);
 // calls the /insert endpoint to index the image
 $response = $service->insert($images);
-`````
+````
 Metadata keys are case-sensitive, and metadata without a matching key in the schema will not be processed by ViSearch. Make sure to configure metadata schema for all of your metadata keys.
 
 ###4.3 Updating Images
@@ -117,7 +115,7 @@ If you need to update an image or its metadata, call the ```insert``` endpoint w
 $images[] = array('im_name'=>'blue_dress','im_url'=>'http://mydomain.com/images/blue_dress.jpg','title'=>'Blue Dress', 'description'=>'A blue dress', 'price'=> 100.0f);
 // calls the /insert endpoint to index the image
 $response = $service->update($images);
-`````
+````
 
  > Each ```insert``` call to ViSearch accepts a maximum of 100 images. We recommend updating your images in batches of 100 for optimized image indexing speed.
 
@@ -133,24 +131,16 @@ $response = $service->remove(array("red_dress","blue_dress"));
 
 ##5. Solutions
 
-###5.1 Find Similar
-**Find similar** solution is to search for visually similar images in the image database giving an indexed image’s unique identifier (im_name).
+###5.1 Visually Similar Recommendations
+**Visually Similar Recommendations** solution is to search for visually similar images in the image database giving an indexed image’s unique identifier (im_name).
 
 ````
 $service = new ViSearch($access_key,$secret_key);
 $service->search("blue_dress");
 ````
 
-###5.2 You May Also Like
-**You may also like** solution is to provide a list of recommended items from the indexed image database based on customizable rules giving an indexed image’s unique identifier (im_name). 
-
-````
-$service = new ViSearch($access_key,$secret_key);
-$service->recommendation("blue_dress");
-````
-
-###5.3 Search by Image
-**Search by image** solution is to search similar images by uploading an image or providing an image url. Image class is used to perform the image encoding and resizing. You should construct the Image object and pass it to uploadsearch to start a search.
+###5.2 Search by Image
+**Search by image** solution is to search similar images by uploading an image or providing an image url.
 
 Using an image from a local file path
 
@@ -183,7 +173,8 @@ Sample response:
     ],
     "im_id": "634b3958037f12a.jpg"
 }
-```
+````
+
 Sample code:
 ````
 $image = new Image('http://mydomain.com/images/red_dress.jpg');
@@ -200,9 +191,9 @@ $response = $service->uploadsearch($new_image);
 ````
 
 
-####5.3.1 Selection Box
+####5.2.1 Selection Box
 
-If the object you wish to search for takes up only a small portion of your image, or other irrelevant objects exists in the same image, chances are the search result could become inaccurate. Use the Box parameter to refine the search area of the image to improve accuracy. Noted that the box coordinated is setted with respect to the original size of the image passed, it will be automatically scaled to fit the resized image for uploading:
+If the object you wish to search for takes up only a small portion of your image, or other irrelevant objects exists in the same image, chances are the search result could become inaccurate. Use the Box parameter to refine the search area of the image to improve accuracy. Noted that the box coordinated is setted with respect to the original size of the image passed, it will be automatically scaled to fit the resized image for uploading:(note: if the box coordinates are invalid(negative or exceed the image boundary), this search will be equivalent to the normal Upload Search)
 
 ```
 $image = new Image(imagePath);
@@ -213,38 +204,32 @@ $image = new Image(imagePath);
 $box = new Box(0,0,10,10);
 $image->set_box($box);
 ```
-####5.3.2 Resizing Settings
-When performing upload search, you may notice the increased search latency with increased image file size. This is due to the increased time spent in network transferring your images to the ViSearch server, and the increased time for processing larger image files in ViSearch. 
 
-To reduce upload search latency, by default the uploadSearch method makes a copy of your image file and resizes the copy to 512x512 pixels if both of the original dimensions exceed 512 pixels. This is the optimized size to lower search latency while not sacrificing search accuracy for general use cases:
 
-````
-$resizeSettings = new ResizeSettings();
-//default resize setting, set the image size to 512 x 512 with jpeg 75 quality
-$image = new Image(imagePath, $resizeSettings);
-````
-
-If your image contains fine details such as textile patterns and textures, you can use a higer quality image for search to get better search result:
-
-````
-//for images with fine details, use HIGH resize settings 1024 x 1024 and jpeg 90 quality
-$image = new Image(imagePath, $resizeSettings->getHigh());
-````
-
-Or, provide the customized resize settings:
-
-````
-//resize the image to 800 by 800 area using jpeg 80 quality
-$image = new Image(imagePath, new ResizeSettings(800, 800, 80));
-````
-
-###5.4 Color Search
+###5.3 Search By Color
 **Search by color** solution is to search images with similar color by providing a color code. The color code should be in Hexadecimal and passed to the colorsearch service.
-
 
 ````
 $service->colorsearch("fa4d4d");
 ````
+
+###5.4 Multiple Product Search
+**Multiple Product Search** solution is to search similar images by uploading an image or providing an image url, similar to Search by Image. Multiple Product Search is able to detect all objects in the image and return similar images for each at one time.
+
+Using an image from a local file path
+
+````
+$image = new Image($imagePath);
+$response = $service->discoversearch($image);
+````
+
+Alternatively, you can pass an image url directly to uploadsearch to start the search.
+
+````
+$image = new Image('http://mydomain.com/images/red_dress.jpg');
+$response = $service->discoversearch($image);
+````
+
 
 ##6. Search Results
 

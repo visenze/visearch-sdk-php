@@ -13,9 +13,6 @@ class ViSearchBaseRequest
     const HOST_API_URL='http://visearch.visenze.com/';
     const SDK_VERSION='visearch-php-sdk/1.1.0';
 
-    //
-    //
-    //   
     function __construct($access_key=NULL, $secret_key=NULL)
     {
         $this->access_key =$access_key;
@@ -44,9 +41,8 @@ class ViSearchBaseRequest
         $headers['Authorization']=$auth_head;
         $headers['X-Requested-With']=self::SDK_VERSION;
 
-        // echo "$url";
         $response = Requests::post($url, $headers, $params, $options);
-        // echo $response->body;
+
         # Handle any HTTP errors.
         if ($response->status_code != 200)
             throw new ViSearchException("HTTP failure, status code $response->status_code");
@@ -105,8 +101,12 @@ class ViSearchBaseRequest
             $headers = array();
         }
 
-        $image_param = array('image' => $params['image']);
-        unset($params['image']);
+        $image_param = null;
+        if(!empty($params['image'])) {
+            $image_param = array('image' => $params['image']);
+            unset($params['image']);    
+        }
+        
         $url = $this->build_http_parameters($url,$params);
 
         $headers[0]='Authorization: '.$auth_head;
@@ -116,7 +116,10 @@ class ViSearchBaseRequest
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $image_param);
+        if($image_param != null) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $image_param);    
+        }
+        
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT,600);
         $result = curl_exec($ch);

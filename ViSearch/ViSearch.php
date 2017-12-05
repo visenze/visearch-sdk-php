@@ -167,10 +167,10 @@ class ViSearch extends ViSearchBaseRequest
 
         if(!empty($im_id)) {
             $params["im_id"] = $im_id;
-            return $this->get('uploadsearch', $params);
+            return $this->post_multipart('uploadsearch', $params);
         } else if ($image -> is_http_image()){
             $params["im_url"]= $image->get_path();
-            return $this->get('uploadsearch', $params);
+            return $this->post_multipart('uploadsearch', $params);
         }else {
             if (class_exists('CURLFile')) {
                 $params['image'] = new CURLFile(realpath($image->local_filepath));
@@ -180,6 +180,70 @@ class ViSearch extends ViSearchBaseRequest
             return $this->post_multipart('uploadsearch', $params);
         }
     }
+
+    /**
+     * discover search
+     * @$image, 
+     *      query image object, it must be a Image object.
+     * @$score, If the value is true, the scores for each returned image will be included in the response.
+     * @$fq, The metadata fields to filter the results. Only fields marked with ‘searchable’ in ViSearch Dashboard can be used as filters.
+     *      this parameter should be like this:
+     *      array(
+     *           "brand" => "my_brand",
+     *           "price" => "0,199"
+     *      )
+     * @$fl, The metadata fields to be returned. The values are returned in the value_map property of the results.
+     *      this parameter should be like this:
+     *      array(
+     *           "brand",
+     *           "price"
+     *      ) 
+     * @$page, The result page number.
+     * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
+     * @get_all_fl, If the value is true, All field list will be returned in the query
+     */
+    function discoversearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0, $detection=NULL){
+       if (!gettype($image) == 'object' || !get_class($image) == 'Image')
+        throw new ViSearchException('Need to pass a image object');
+
+        if(!$image->is_valid_image())
+            throw new ViSearchException("Please input a valid local image file path or http image url or im_id");
+
+        $params = array(
+            'score'=> $score,
+            'page'=> $page,
+            'limit' => $limit,
+            'fq' => $fq,
+            'fl' => $fl,
+            'score_max'=>$score_max,
+            'score_min'=>$score_min,
+            'get_all_fl'=>$get_all_fl,
+            'detection'=>$detection
+        );
+
+        $box = $image->get_box();
+        if(!empty($box)){
+            $params["box"] = $image->get_box_parse();
+        }
+
+        $im_id = $image->get_im_id();
+
+        if(!empty($im_id)) {
+            $params["im_id"] = $im_id;
+            return $this->post_multipart('discoversearch', $params);
+        } else if ($image -> is_http_image()){
+            $params["im_url"]= $image->get_path();
+            return $this->post_multipart('discoversearch', $params);
+        }else {
+            if (class_exists('CURLFile')) {
+                $params['image'] = new CURLFile(realpath($image->local_filepath));
+            } else {
+                $params['image'] = "@{$image->local_filepath}";
+            }
+            return $this->post_multipart('discoversearch', $params);
+        }
+    }
+
     /**
      * insert images
      * @$images is an array list of array
