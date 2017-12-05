@@ -11,13 +11,12 @@
 	  - 4.2 [Image with Metadata](#42-image-with-metadata)
 	  - 4.3 [Updating Images](#43-updating-images)
 	  - 4.4 [Removing Images](#44-removing-images)
- 5. [Soluiton APIs](#5-solution-apis)
- 	  - 5.1 [Visually Similar Recommendations](#51-visually-similar-recommendations)
+ 5. [Soluitons](#5-solutions)
+ 	  - 5.1 [Visualy Similar Recommendations](#51-visualy-similar-recommendations)
       - 5.2 [Search by Image](#52-search-by-image)
         - 5.2.1 [Selection Box](#521-selection-box)
-        - 5.2.2 [Resizing Settings](#522-resizing-settings) 
 	  - 5.3 [Search by Color](#53-search-by-color)
-	    
+      - 5.4 [Multiple Product Search](#54-multiple-product-search)
  6. [Search Results](#6-search-results)
  7. [Advanced Search Parameters](#7-advanced-search-parameters)
 	  - 7.1 [Retrieving Metadata](#71-retrieving-metadata)
@@ -215,18 +214,8 @@ $box = new Box(0,0,10,10);
 $image->set_box($box);
 ```
 
-#### 5.2.2 Resizing Settings
-When performing upload search, you may notice the increased search latency with increased image file size. This is due to the increased time spent in network transferring your images to the ViSearch server, and the increased time for processing larger image files in ViSearch. 
-
-To reduce upload search latency, by default the uploadSearch method makes a copy of your image file and resizes the copy to 512x512 pixels if both of the original dimensions exceed 512 pixels. This is the optimized size to lower search latency while not sacrificing search accuracy for general use cases:
-
-```
-$resizeSettings = new ResizeSettings();
-//default resize setting, set the image size to 512 x 512 with jpeg 75 quality
-$image = new Image(imagePath, $resizeSettings);
-```
-
-If your image contains fine details such as textile patterns and textures, you can use a higer quality image for search to get better search result:
+### 5.3 Search By Color
+**Search by color** solution is to search images with similar color by providing a color code. The color code should be in Hexadecimal and passed to the colorsearch service.
 
 ```
 //for images with fine details, use HIGH resize settings 1024 x 1024 and jpeg 90 quality
@@ -235,20 +224,24 @@ $image = new Image(imagePath, $resizeSettings->getHigh());
 
 Or, provide the customized resize settings:
 
-```
-//resize the image to 800 by 800 area using jpeg 80 quality
-$image = new Image(imagePath, new ResizeSettings(800, 800, 80));
-```
+### 5.4 Multiple Product Search
 
-### 5.3 Search by Color
+**Multiple Product Search** solution is to search similar images by uploading an image or providing an image url, similar to Search by Image. Multiple Product Search is able to detect all objects in the image and return similar images for each at one time.
 
-GET /colorsearch
+Using an image from a local file path
 
-**Search by color** solution is to search images with similar color by providing a color code. The color code should be in Hexadecimal and passed to the colorsearch service.
+````
+$image = new Image($imagePath);
+$response = $service->discoversearch($image);
+````
 
-```
-$service->colorsearch("fa4d4d");
-```
+Alternatively, you can pass an image url directly to uploadsearch to start the search.
+
+````
+$image = new Image('http://mydomain.com/images/red_dress.jpg');
+$response = $service->discoversearch($image);
+````
+
 
 ## 6. Search Results
 
