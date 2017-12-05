@@ -214,7 +214,7 @@ $box = new Box(0,0,10,10);
 $image->set_box($box);
 ```
 
-###5.3 Search By Color
+### 5.3 Search By Color
 **Search by color** solution is to search images with similar color by providing a color code. The color code should be in Hexadecimal and passed to the colorsearch service.
 
 ```
@@ -224,7 +224,7 @@ $image = new Image(imagePath, $resizeSettings->getHigh());
 
 Or, provide the customized resize settings:
 
-###5.4 Multiple Product Search
+### 5.4 Multiple Product Search
 
 **Multiple Product Search** solution is to search similar images by uploading an image or providing an image url, similar to Search by Image. Multiple Product Search is able to detect all objects in the image and return similar images for each at one time.
 
@@ -243,7 +243,7 @@ $response = $service->discoversearch($image);
 ````
 
 
-##6. Search Results
+## 6. Search Results
 
 ViSearch returns a maximum number of 1000 most relevant image search results. You can provide pagination parameters to control the paging of the image search results.
 
