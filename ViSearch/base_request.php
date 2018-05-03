@@ -10,13 +10,18 @@ Requests::register_autoloader();
 class ViSearchBaseRequest
 {
     
-    const HOST_API_URL='http://visearch.visenze.com/';
-    const SDK_VERSION='visearch-php-sdk/1.1.0';
+    const HOST_API_URL='https://visearch.visenze.com';
+    const SDK_VERSION='visearch-php-sdk/1.2.0';
 
-    function __construct($access_key=NULL, $secret_key=NULL)
+    function __construct($access_key=NULL, $secret_key=NULL, $endpoint=NULL)
     {
         $this->access_key =$access_key;
         $this->secret_key =$secret_key;
+        if ($endpoint != NULL) {
+            $this->endpoint = $endpoint;
+        }else {
+            $this->endpoint = self::HOST_API_URL;        
+        }
     }
 
     /**
@@ -25,7 +30,7 @@ class ViSearchBaseRequest
     protected function post($method, $params=array(), $headers= array(), $options= array())
     {
         # construct the query URL.
-        $url = self::HOST_API_URL . $method ;
+        $url = $this->endpoint . "/" . $method ;
 
         $auth_head = $this->get_auth_header($this->access_key,$this->secret_key);
         if(!$headers){
@@ -59,7 +64,7 @@ class ViSearchBaseRequest
     protected function get($method, $params=array(), $headers= array(), $options= array())
     {
         # construct the query URL.
-        $url = self::HOST_API_URL . $method ;
+        $url = $this->endpoint . "/" . $method ;
 
         $auth_head = $this->get_auth_header($this->access_key,$this->secret_key);
         if(!$headers){
@@ -94,7 +99,7 @@ class ViSearchBaseRequest
      * so 
      */
     protected function post_multipart($method, $params=array(), $headers= array(), $options= array()){
-        $url = self::HOST_API_URL . $method ;
+        $url = $this->endpoint . "/" . $method ;
 
         $auth_head = $this->get_auth_header($this->access_key,$this->secret_key);
         if(!$headers){

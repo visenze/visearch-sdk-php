@@ -8,9 +8,9 @@ class ViSearch extends ViSearchBaseRequest
     //
     // constructor for SearchService
     //
-    function __construct($access_key=NULL, $secret_key=NULL)
+    function __construct($access_key=NULL, $secret_key=NULL, $endpoint=NULL)
     {
-        parent::__construct($access_key, $secret_key);
+        parent::__construct($access_key, $secret_key, $endpoint);
     }
 
     /**
