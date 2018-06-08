@@ -34,6 +34,8 @@ The ViSearch PHP SDK is an open source software for easy integration of ViSearch
  Current stable version: 1.3.0
  
  Minimum requirement: php5, php5-curl
+ 
+ Note that minimum PHP version: 5.5.0
 
 ## 2. Setup
 You can get the source code of the SDK and demos from the [Github repo](https://github.com/visenze/visearch-sdk-php).
