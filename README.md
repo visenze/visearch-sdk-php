@@ -47,7 +47,7 @@ Install [Composer](https://getcomposer.org/doc/00-intro.md), which is the projec
 Run the following commands to install the required dependencies
 ```$xslt
 // install dependency
-php /usr/local/bin/composer update
+composer install
 ```
 
 Include ViSearch API into your project.
