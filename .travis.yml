@@ -3,5 +3,6 @@ php:
   - 5.5
   - 5.4
   - hhvm
+  - nightly
 script:
-  cd Sample && php viSearch_sample.php
+  composer install && cd Sample && php viSearch_sample.php
