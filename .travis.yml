@@ -3,4 +3,4 @@ php:
   - 5.5
   - hhvm
 script:
-  composer install && cd Sample && php viSearch_sample.php
+  cd ViSearch && php composer.phar install && cd ../Sample && php viSearch_sample.php
