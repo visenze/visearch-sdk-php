@@ -167,17 +167,13 @@ class ViSearch extends ViSearchBaseRequest
 
         if(!empty($im_id)) {
             $params["im_id"] = $im_id;
-            return $this->post_multipart('uploadsearch', $params);
+            return $this->post_multipart_form_data('uploadsearch', $params);
         } else if ($image -> is_http_image()){
             $params["im_url"]= $image->get_path();
-            return $this->post_multipart('uploadsearch', $params);
+            return $this->post_multipart_form_data('uploadsearch', $params);
         }else {
-            if (class_exists('CURLFile')) {
-                $params['image'] = new CURLFile(realpath($image->local_filepath));
-            } else {
-                $params['image'] = "@{$image->local_filepath}";
-            }
-            return $this->post_multipart('uploadsearch', $params);
+            $params['image'] = "{$image->local_filepath}";
+            return $this->post_multipart_form_data('uploadsearch', $params);
         }
     }
 
@@ -230,17 +226,13 @@ class ViSearch extends ViSearchBaseRequest
 
         if(!empty($im_id)) {
             $params["im_id"] = $im_id;
-            return $this->post_multipart('discoversearch', $params);
+            return $this->post_multipart_form_data('discoversearch', $params);
         } else if ($image -> is_http_image()){
             $params["im_url"]= $image->get_path();
-            return $this->post_multipart('discoversearch', $params);
+            return $this->post_multipart_form_data('discoversearch', $params);
         }else {
-            if (class_exists('CURLFile')) {
-                $params['image'] = new CURLFile(realpath($image->local_filepath));
-            } else {
-                $params['image'] = "@{$image->local_filepath}";
-            }
-            return $this->post_multipart('discoversearch', $params);
+            $params['image'] = "@{$image->local_filepath}";
+            return $this->post_multipart_form_data('discoversearch', $params);
         }
     }
 

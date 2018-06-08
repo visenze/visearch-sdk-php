@@ -3,6 +3,10 @@
 // include Requests library
 require_once 'library/Requests.php';
 require_once 'image.php';
+//require "GuzzleHttp\Client";
+require 'vendor/autoload.php';
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 // make sure Requests can load internal classes
 Requests::register_autoloader();
@@ -11,7 +15,7 @@ class ViSearchBaseRequest
 {
     
     const HOST_API_URL='https://visearch.visenze.com';
-    const SDK_VERSION='visearch-php-sdk/1.2.0';
+    const SDK_VERSION='visearch-php-sdk/1.3.0';
 
     function __construct($access_key=NULL, $secret_key=NULL, $endpoint=NULL)
     {
@@ -94,6 +98,50 @@ class ViSearchBaseRequest
         return $response_json;
     }
 
+    protected function post_multipart_form_data($method, $params=array(), $headers= array(), $options= array()) {
+        $url = $this->endpoint . "/" . $method ;
+        $client = new Client([
+            // Base URI is used with relative requests
+            'base_uri' => $this->endpoint,
+            // You can set any number of default request options.
+            'timeout'  => 600,
+        ]);
+
+        $auth_head = $this->get_auth_header($this->access_key,$this->secret_key);
+        $form_params = $this->generate_multipart_parameters($params);
+
+        if(!empty($params['image'])) {
+
+            if (is_object($params['image'])) {
+                $file_name = $params['image']->getFilename();
+                unset($params['image']);
+            } else {
+                $file_name = $params['image'];
+            }
+            $form_params[] = array(
+                'name' => "image",
+                'contents' => fopen($file_name,'r')
+            );
+        }
+
+        try {
+            $response = $client->request('POST', $url, [
+                'headers' => [
+                    'X-Requested-With' => self::SDK_VERSION,
+                    'Authorization' => $auth_head
+                ],
+                'multipart' => $form_params
+            ]);
+        } catch (GuzzleException $e) {
+            echo "Message: ". $e->getMessage();
+        } catch (Exception $e) {
+            echo "Message: ". $e->getMessage();
+        }
+
+        $response_json = json_decode($response->getBody());
+        return $response_json;
+    }
+
     /**
      * got not working when use Requests library to post file, so here we change to use local curl package.
      * so 
@@ -122,8 +170,11 @@ class ViSearchBaseRequest
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         if($image_param != null) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $image_param);    
+            echo $image_param;
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $image_param);
+
         }
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT,600);
@@ -144,6 +195,43 @@ class ViSearchBaseRequest
     protected function is_assoc($arr)
     {
         return array_keys($arr) !== range(0, count($arr) - 1);
+    }
+
+    protected function generate_multipart_parameters($params=array()) {
+        $multipart_params = array();
+        foreach ($params as $key => $value) {
+            if(is_bool($value)){
+                $bool_res = ($value) ? 'true' : 'false';
+                $multipart_params[] = array(
+                    'name' => $key,
+                    'contents' => $bool_res
+                );
+            } elseif(is_array($value)){
+                $is_assoc = $this->is_assoc($value);
+                foreach ($value as $p_key=>$p_val) {
+                    if(is_array($p_val)){
+                        continue;
+                    }
+                    if($is_assoc){
+                        $multipart_params[] = array(
+                            'name' => $key,
+                            'contents' => $p_key.':'.$p_val
+                        );
+                    }else{
+                        $multipart_params[] = array(
+                            'name' => $key,
+                            'contents' => $p_val
+                        );
+                    }
+                }
+            } else {
+                $multipart_params[] = array(
+                    'name' => $key,
+                    'contents' => $value
+                );
+            }
+        }
+        return $multipart_params;
     }
 
     protected function ensure_multipart_parameters($params=array()) {
