@@ -163,6 +163,10 @@ $image = new Image($imagePath);
 $response = $service->uploadsearch($image);
 ```
 
+> For optimal results, we recommend images around `1024x1024` pixels. Low resolution images may result in unsatisfying search results.  
+> If the image is larger, we recommended to resize the image to `1024x1024` pixels before sending to API. Too high resolution images may result in timeout.  
+> The maximum file size of an image is 10MB. 
+
 Alternatively, you can pass an image url directly to uploadsearch to start the search.
 
 ```
