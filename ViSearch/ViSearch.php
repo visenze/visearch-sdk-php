@@ -138,8 +138,9 @@ class ViSearch extends ViSearchBaseRequest
      * @$page, The result page number.
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @get_all_fl, If the value is true, All field list will be returned in the query
+     * @detection, Please refer to https://developers.visenze.com/api/#multiple-product-search for how this parameter is used
      */
-    function uploadsearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0, $detection=NULL){
+    function uploadsearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0, $detection='all'){
        if (!gettype($image) == 'object' || !get_class($image) == 'Image')
         throw new ViSearchException('Need to pass a image object');
 
@@ -201,8 +202,9 @@ class ViSearch extends ViSearchBaseRequest
      * @$page, The result page number.
      * @$limit, The number of results returned per page. The maximum number of results returned from the API is 1000.
      * @get_all_fl, If the value is true, All field list will be returned in the query
+     * @detection, Please refer to https://developers.visenze.com/api/#multiple-product-search for how this parameter is used
      */
-    function discoversearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0, $detection=NULL){
+    function discoversearch($image=NULL, $page=1, $limit=30, $fl=array(), $fq=array(), $get_all_fl=false, $score=false, $score_max=1, $score_min=0, $detection='all'){
        if (!gettype($image) == 'object' || !get_class($image) == 'Image')
         throw new ViSearchException('Need to pass a image object');
 

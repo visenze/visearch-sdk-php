@@ -11,7 +11,7 @@ class ViSearchBaseRequest
 {
     
     const HOST_API_URL='https://visearch.visenze.com';
-    const SDK_VERSION='visearch-php-sdk/1.2.0';
+    const SDK_VERSION='visearch-php-sdk/1.2.1';
 
     function __construct($access_key=NULL, $secret_key=NULL, $endpoint=NULL)
     {
